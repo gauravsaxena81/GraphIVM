@@ -1,0 +1,77 @@
+Generating DataStructures.hpp
+1 - For each table <T> in join chain
+1.1	In DataStructures.hpp create
+1.1.1	struct <T>JoinTupleMap with following fields
+1.1.1.1		capacity = <Number of join tuples expected>
+1.1.1.2		size = 0
+1.1.1.3		<T>JoinTupleEntry* array with initial length = capacity
+1.1.1 - End
+1.1.2	struct <T>JoinTupleEntry with following fields
+1.1.2.1		For each Table <T'>, <T> joins with
+1.1.2.1.1		<T,T'>VertexValueEntry*
+1.1.2.2		If there are projected attributes of T
+1.1.2.2.1		<T>ProjectedTupleMap*
+1.1.2.3		<T>JoinTupleEntry* next //Next link for chaining in case of collissions
+1.1.2 - End//Join Tuples
+1.1.3	If there are projected attributes of T create
+1.1.3.1		struct <T>ProjectedTupleMap with following fields
+1.1.3.1.1		capacity = <Number of projected tuples expected per join tuple of T>
+1.1.3.1.2		size = 0
+1.1.3.1.3		<T>ProjectedTupleEntry* array with initial length = capacity
+1.1.3.1 - 	End
+1.1.3.2		struct <T>ProjectedTupleEntry with following fields
+1.1.3.2.1		a field for each projected attribute
+1.1.3.2.2		count = 1
+1.1.3.2.3		<T>ProjectedTupleEntry next //Next link for chaining in case of collissions
+1.1.3.2 - 	End
+1.1.3 - End//Projected Tuples
+1.1.4 	For each Table <T'>, <T> joins with
+1.1.4.1		If not defined already create alhabetically
+1.1.4.1.1		struct <T, T'>VertexValueMap with following fields
+1.1.4.1.1.1			capacity = <number of unique vertex values possible>
+1.1.4.1.1.2			size = 0;
+1.1.4.1.1.3			<T,T'>VertexValueEntry* array
+1.1.4.1.1 -		End
+1.1.4.1.2		struct <T, T'>VertexValueEntry with following fields
+1.1.4.1.2.1			A field for each attribute in vertex value
+1.1.4.1.2.2			<T>JoinTupleEntry* Vector
+1.1.4.1.2.3			<T'>JoinTupleEntry* Vector
+1.1.4.1.2.4			<T, T'>VertexValueEntry* next //Next link for chaining in case of collissions
+1.1.4.1.2 -		End
+1.1.4.1	-	End
+1.1.4 - End//VertexValues
+1.1 - End //DataStructures.hpp ends
+-------------------------------------------------------------------------------------------------------------------
+Generating Functions.hpp
+1.2 - In Functions.hpp create the following functions
+1.2.1 	put<T>JoinTupleIfAbsent
+1.2.2	<T>JoinTupleIterator
+1.2.3	If <T> has projected attributes
+1.2.3.1		put<T>ProjectedTuple
+1.2.3.2		<T>ProjectedTupleIterator
+1.2.3 - End
+1.2 - End //Functions.hpp ends
+-------------------------------------------------------------------------------------------------------------------
+Generating Map Managers
+1.3 - For each table T create following files
+1.3.1 	Include DataStructures.hpp and Functions.hpp
+1.3.2	<T>JoinTupleMapManager with following functions
+1.3.2.1		put<T>JoinTupleIfAbsent
+1.3.2.2		<T>JoinTupleIterator
+1.3.2 - End //Join Tuple Map Manager + Bunch of static functions
+1.3.3	If T has projected attributes
+1.3.3.1		<T>ProjectedTupleMapManager with following functions
+1.3.3.1.1		put<T>ProjectedTuple
+1.3.3.1.2		<T>ProjectedTupleIterator
+1.3.3.1 - 	End //Projected Tuple Map Manager + Bunch of static functions
+1.3.3 - End //Projected Tuple Map Manager + Bunch of private functions
+1.3 - End //Cpp files for T ends
+-------------------------------------------------------------------------------------------------------------------
+Generating Query File
+1.4 Declare <T>JoinTupleMap
+1.5 - Generate Functions for <T>
+1.5.1	add<T>Tuple
+1.5.2	bfs<T>
+1.5 - End
+1.6 Generate Scan function
+1 - End //Process Ends

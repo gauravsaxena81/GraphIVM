@@ -1,0 +1,264 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  us/call  us/call  name    
+ 54.93      0.39     0.39                             bfsTweetDiff(TweetJoinTupleEntry*, TweetProjectedTupleEntry*)
+ 30.28      0.61     0.22 29150000     0.01     0.01  next()
+  4.23      0.64     0.03                             putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*)
+  2.82      0.66     0.02  1900000     0.01     0.01  follower1ProjectedTupleIterator(Follower1ProjectedTupleMap*)
+  1.41      0.67     0.01   224352     0.04     0.04  putFollower3Follower4VertexValueIfAbsent(Follower3Follower4VertexValueMap*, int&)
+  1.41      0.68     0.01                             putFollower1JoinTupleIfAbsent(Follower1JoinTupleMap*, int&, Follower1Follower2VertexValueMap*)
+  1.41      0.69     0.01                             putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*)
+  1.41      0.70     0.01                             pqxx::string_traits<long>::from_string(char const*, long&) (strconv.cxx:421 @ 417c00)
+  1.41      0.71     0.01                             pqxx::string_traits<long>::from_string(char const*, long&) (strconv.cxx:423 @ 417c67)
+  0.70      0.71     0.01      984     5.08     5.08  void std::vector<Follower1JoinTupleEntry*, std::allocator<Follower1JoinTupleEntry*> >::_M_emplace_back_aux<Follower1JoinTupleEntry* const&>(Follower1JoinTupleEntry* const&)
+  0.00      0.71     0.00   224352     0.00     0.00  putFollower2Follower3VertexValueIfAbsent(Follower2Follower3VertexValueMap*, int&)
+  0.00      0.71     0.00   224352     0.00     0.00  putFollower4Follower5VertexValueIfAbsent(Follower4Follower5VertexValueMap*, int&)
+  0.00      0.71     0.00   119533     0.00     0.00  putFollower5TweetVertexValueIfAbsent(Follower5TweetVertexValueMap*, int&)
+  0.00      0.71     0.00   113160     0.00     0.00  putFollower1Follower2VertexValueIfAbsent(Follower1Follower2VertexValueMap*, int&)
+  0.00      0.71     0.00    46630     0.00     0.00  void std::vector<Follower2JoinTupleEntry*, std::allocator<Follower2JoinTupleEntry*> >::_M_emplace_back_aux<Follower2JoinTupleEntry* const&>(Follower2JoinTupleEntry* const&)
+  0.00      0.71     0.00    46630     0.00     0.00  void std::vector<Follower3JoinTupleEntry*, std::allocator<Follower3JoinTupleEntry*> >::_M_emplace_back_aux<Follower3JoinTupleEntry* const&>(Follower3JoinTupleEntry* const&)
+  0.00      0.71     0.00    46630     0.00     0.00  void std::vector<Follower4JoinTupleEntry*, std::allocator<Follower4JoinTupleEntry*> >::_M_emplace_back_aux<Follower4JoinTupleEntry* const&>(Follower4JoinTupleEntry* const&)
+  0.00      0.71     0.00    46630     0.00     0.00  void std::vector<Follower5JoinTupleEntry*, std::allocator<Follower5JoinTupleEntry*> >::_M_emplace_back_aux<Follower5JoinTupleEntry* const&>(Follower5JoinTupleEntry* const&)
+  0.00      0.71     0.00     7357     0.00     0.00  void std::vector<TweetJoinTupleEntry*, std::allocator<TweetJoinTupleEntry*> >::_M_emplace_back_aux<TweetJoinTupleEntry* const&>(TweetJoinTupleEntry* const&)
+  0.00      0.71     0.00        3     0.00     0.00  std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, std::string> >*)
+  0.00      0.71     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z22putTweetProjectedTupleP22TweetProjectedTupleMapRi
+  0.00      0.71     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z26putFollower1ProjectedTupleP26Follower1ProjectedTupleMapRi
+  0.00      0.71     0.00        1     0.00     0.00  _GLOBAL__sub_I_count
+  0.00      0.71     0.00        1     0.00     0.00  std::_Rb_tree<std::string, std::pair<std::string const, pqxx::prepare::internal::prepared_def>, std::_Select1st<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::prepare::internal::prepared_def> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >*)
+  0.00      0.71     0.00        1     0.00     0.00  std::_Rb_tree<std::string, std::pair<std::string const, pqxx::notification_receiver*>, std::_Select1st<std::pair<std::string const, pqxx::notification_receiver*> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::notification_receiver*> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::notification_receiver*> >*)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 1.41% of 0.71 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     88.0    0.39    0.24                 bfsTweetDiff(TweetJoinTupleEntry*, TweetProjectedTupleEntry*) [1]
+                0.22    0.00 29150000/29150000     next() [2]
+                0.02    0.00 1900000/1900000     follower1ProjectedTupleIterator(Follower1ProjectedTupleMap*) [4]
+-----------------------------------------------
+                0.22    0.00 29150000/29150000     bfsTweetDiff(TweetJoinTupleEntry*, TweetProjectedTupleEntry*) [1]
+[2]     30.3    0.22    0.00 29150000         next() [2]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]      4.9    0.03    0.01                 putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*) [3]
+                0.01    0.00  112176/224352      putFollower3Follower4VertexValueIfAbsent(Follower3Follower4VertexValueMap*, int&) [6]
+                0.00    0.00  112176/224352      putFollower2Follower3VertexValueIfAbsent(Follower2Follower3VertexValueMap*, int&) [1770]
+                0.00    0.00   46630/46630       void std::vector<Follower3JoinTupleEntry*, std::allocator<Follower3JoinTupleEntry*> >::_M_emplace_back_aux<Follower3JoinTupleEntry* const&>(Follower3JoinTupleEntry* const&) [1775]
+-----------------------------------------------
+                0.02    0.00 1900000/1900000     bfsTweetDiff(TweetJoinTupleEntry*, TweetProjectedTupleEntry*) [1]
+[4]      2.8    0.02    0.00 1900000         follower1ProjectedTupleIterator(Follower1ProjectedTupleMap*) [4]
+-----------------------------------------------
+                                                 <spontaneous>
+[5]      2.1    0.01    0.01                 putFollower1JoinTupleIfAbsent(Follower1JoinTupleMap*, int&, Follower1Follower2VertexValueMap*) [5]
+                0.01    0.00     984/984         void std::vector<Follower1JoinTupleEntry*, std::allocator<Follower1JoinTupleEntry*> >::_M_emplace_back_aux<Follower1JoinTupleEntry* const&>(Follower1JoinTupleEntry* const&) [10]
+                0.00    0.00     984/113160      putFollower1Follower2VertexValueIfAbsent(Follower1Follower2VertexValueMap*, int&) [1773]
+-----------------------------------------------
+                0.01    0.00  112176/224352      putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*) [3]
+                0.01    0.00  112176/224352      putFollower4JoinTupleIfAbsent(Follower4JoinTupleMap*, int&, int&, Follower3Follower4VertexValueMap*, Follower4Follower5VertexValueMap*) [11]
+[6]      1.4    0.01    0.00  224352         putFollower3Follower4VertexValueIfAbsent(Follower3Follower4VertexValueMap*, int&) [6]
+-----------------------------------------------
+                                                 <spontaneous>
+[7]      1.4    0.01    0.00                 putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*) [7]
+                0.00    0.00  112176/224352      putFollower4Follower5VertexValueIfAbsent(Follower4Follower5VertexValueMap*, int&) [1771]
+                0.00    0.00  112176/119533      putFollower5TweetVertexValueIfAbsent(Follower5TweetVertexValueMap*, int&) [1772]
+                0.00    0.00   46630/46630       void std::vector<Follower5JoinTupleEntry*, std::allocator<Follower5JoinTupleEntry*> >::_M_emplace_back_aux<Follower5JoinTupleEntry* const&>(Follower5JoinTupleEntry* const&) [1777]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      1.4    0.01    0.00                 pqxx::string_traits<long>::from_string(char const*, long&) (strconv.cxx:421 @ 417c00) [8]
+-----------------------------------------------
+                0.01    0.00     984/984         putFollower1JoinTupleIfAbsent(Follower1JoinTupleMap*, int&, Follower1Follower2VertexValueMap*) [5]
+[10]     0.7    0.01    0.00     984         void std::vector<Follower1JoinTupleEntry*, std::allocator<Follower1JoinTupleEntry*> >::_M_emplace_back_aux<Follower1JoinTupleEntry* const&>(Follower1JoinTupleEntry* const&) [10]
+-----------------------------------------------
+                                                 <spontaneous>
+[11]     0.7    0.00    0.01                 putFollower4JoinTupleIfAbsent(Follower4JoinTupleMap*, int&, int&, Follower3Follower4VertexValueMap*, Follower4Follower5VertexValueMap*) [11]
+                0.01    0.00  112176/224352      putFollower3Follower4VertexValueIfAbsent(Follower3Follower4VertexValueMap*, int&) [6]
+                0.00    0.00  112176/224352      putFollower4Follower5VertexValueIfAbsent(Follower4Follower5VertexValueMap*, int&) [1771]
+                0.00    0.00   46630/46630       void std::vector<Follower4JoinTupleEntry*, std::allocator<Follower4JoinTupleEntry*> >::_M_emplace_back_aux<Follower4JoinTupleEntry* const&>(Follower4JoinTupleEntry* const&) [1776]
+-----------------------------------------------
+                0.00    0.00  112176/224352      putFollower2JoinTupleIfAbsent(Follower2JoinTupleMap*, int&, int&, Follower1Follower2VertexValueMap*, Follower2Follower3VertexValueMap*) [1893]
+                0.00    0.00  112176/224352      putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*) [3]
+[1770]   0.0    0.00    0.00  224352         putFollower2Follower3VertexValueIfAbsent(Follower2Follower3VertexValueMap*, int&) [1770]
+-----------------------------------------------
+                0.00    0.00  112176/224352      putFollower4JoinTupleIfAbsent(Follower4JoinTupleMap*, int&, int&, Follower3Follower4VertexValueMap*, Follower4Follower5VertexValueMap*) [11]
+                0.00    0.00  112176/224352      putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*) [7]
+[1771]   0.0    0.00    0.00  224352         putFollower4Follower5VertexValueIfAbsent(Follower4Follower5VertexValueMap*, int&) [1771]
+-----------------------------------------------
+                0.00    0.00    7357/119533      putTweetJoinTupleIfAbsent(TweetJoinTupleMap*, int&, Follower5TweetVertexValueMap*) [1885]
+                0.00    0.00  112176/119533      putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*) [7]
+[1772]   0.0    0.00    0.00  119533         putFollower5TweetVertexValueIfAbsent(Follower5TweetVertexValueMap*, int&) [1772]
+-----------------------------------------------
+                0.00    0.00     984/113160      putFollower1JoinTupleIfAbsent(Follower1JoinTupleMap*, int&, Follower1Follower2VertexValueMap*) [5]
+                0.00    0.00  112176/113160      putFollower2JoinTupleIfAbsent(Follower2JoinTupleMap*, int&, int&, Follower1Follower2VertexValueMap*, Follower2Follower3VertexValueMap*) [1893]
+[1773]   0.0    0.00    0.00  113160         putFollower1Follower2VertexValueIfAbsent(Follower1Follower2VertexValueMap*, int&) [1773]
+-----------------------------------------------
+                0.00    0.00   46630/46630       putFollower2JoinTupleIfAbsent(Follower2JoinTupleMap*, int&, int&, Follower1Follower2VertexValueMap*, Follower2Follower3VertexValueMap*) [1893]
+[1774]   0.0    0.00    0.00   46630         void std::vector<Follower2JoinTupleEntry*, std::allocator<Follower2JoinTupleEntry*> >::_M_emplace_back_aux<Follower2JoinTupleEntry* const&>(Follower2JoinTupleEntry* const&) [1774]
+-----------------------------------------------
+                0.00    0.00   46630/46630       putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*) [3]
+[1775]   0.0    0.00    0.00   46630         void std::vector<Follower3JoinTupleEntry*, std::allocator<Follower3JoinTupleEntry*> >::_M_emplace_back_aux<Follower3JoinTupleEntry* const&>(Follower3JoinTupleEntry* const&) [1775]
+-----------------------------------------------
+                0.00    0.00   46630/46630       putFollower4JoinTupleIfAbsent(Follower4JoinTupleMap*, int&, int&, Follower3Follower4VertexValueMap*, Follower4Follower5VertexValueMap*) [11]
+[1776]   0.0    0.00    0.00   46630         void std::vector<Follower4JoinTupleEntry*, std::allocator<Follower4JoinTupleEntry*> >::_M_emplace_back_aux<Follower4JoinTupleEntry* const&>(Follower4JoinTupleEntry* const&) [1776]
+-----------------------------------------------
+                0.00    0.00   46630/46630       putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*) [7]
+[1777]   0.0    0.00    0.00   46630         void std::vector<Follower5JoinTupleEntry*, std::allocator<Follower5JoinTupleEntry*> >::_M_emplace_back_aux<Follower5JoinTupleEntry* const&>(Follower5JoinTupleEntry* const&) [1777]
+-----------------------------------------------
+                0.00    0.00    7357/7357        putTweetJoinTupleIfAbsent(TweetJoinTupleMap*, int&, Follower5TweetVertexValueMap*) [1885]
+[1778]   0.0    0.00    0.00    7357         void std::vector<TweetJoinTupleEntry*, std::allocator<TweetJoinTupleEntry*> >::_M_emplace_back_aux<TweetJoinTupleEntry* const&>(TweetJoinTupleEntry* const&) [1778]
+-----------------------------------------------
+                0.00    0.00       1/3           pqxx::basic_connection<pqxx::connect_direct>::~basic_connection() [2928]
+                0.00    0.00       2/3           ~_Rb_tree (stl_tree.h:671 @ 41f08c) [1079]
+[1779]   0.0    0.00    0.00       3         std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, std::string> >*) [1779]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [8457]
+[1780]   0.0    0.00    0.00       1         _GLOBAL__sub_I__Z22putTweetProjectedTupleP22TweetProjectedTupleMapRi [1780]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [8457]
+[1781]   0.0    0.00    0.00       1         _GLOBAL__sub_I__Z26putFollower1ProjectedTupleP26Follower1ProjectedTupleMapRi [1781]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [8457]
+[1782]   0.0    0.00    0.00       1         _GLOBAL__sub_I_count [1782]
+-----------------------------------------------
+                0.00    0.00       1/1           pqxx::basic_connection<pqxx::connect_direct>::~basic_connection() [2928]
+[1783]   0.0    0.00    0.00       1         std::_Rb_tree<std::string, std::pair<std::string const, pqxx::prepare::internal::prepared_def>, std::_Select1st<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::prepare::internal::prepared_def> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >*) [1783]
+-----------------------------------------------
+                0.00    0.00       1/1           pqxx::basic_connection<pqxx::connect_direct>::~basic_connection() [2928]
+[1784]   0.0    0.00    0.00       1         std::_Rb_tree<std::string, std::pair<std::string const, pqxx::notification_receiver*>, std::_Select1st<std::pair<std::string const, pqxx::notification_receiver*> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::notification_receiver*> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::notification_receiver*> >*) [1784]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [1780] _GLOBAL__sub_I__Z22putTweetProjectedTupleP22TweetProjectedTupleMapRi [1773] putFollower1Follower2VertexValueIfAbsent(Follower1Follower2VertexValueMap*, int&) [1774] void std::vector<Follower2JoinTupleEntry*, std::allocator<Follower2JoinTupleEntry*> >::_M_emplace_back_aux<Follower2JoinTupleEntry* const&>(Follower2JoinTupleEntry* const&)
+ [1781] _GLOBAL__sub_I__Z26putFollower1ProjectedTupleP26Follower1ProjectedTupleMapRi [1770] putFollower2Follower3VertexValueIfAbsent(Follower2Follower3VertexValueMap*, int&) [1775] void std::vector<Follower3JoinTupleEntry*, std::allocator<Follower3JoinTupleEntry*> >::_M_emplace_back_aux<Follower3JoinTupleEntry* const&>(Follower3JoinTupleEntry* const&)
+ [1782] _GLOBAL__sub_I_count   [6] putFollower3Follower4VertexValueIfAbsent(Follower3Follower4VertexValueMap*, int&) [1776] void std::vector<Follower4JoinTupleEntry*, std::allocator<Follower4JoinTupleEntry*> >::_M_emplace_back_aux<Follower4JoinTupleEntry* const&>(Follower4JoinTupleEntry* const&)
+   [1] bfsTweetDiff(TweetJoinTupleEntry*, TweetProjectedTupleEntry*) [1771] putFollower4Follower5VertexValueIfAbsent(Follower4Follower5VertexValueMap*, int&) [1777] void std::vector<Follower5JoinTupleEntry*, std::allocator<Follower5JoinTupleEntry*> >::_M_emplace_back_aux<Follower5JoinTupleEntry* const&>(Follower5JoinTupleEntry* const&)
+   [5] putFollower1JoinTupleIfAbsent(Follower1JoinTupleMap*, int&, Follower1Follower2VertexValueMap*) [2] next() [1783] std::_Rb_tree<std::string, std::pair<std::string const, pqxx::prepare::internal::prepared_def>, std::_Select1st<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::prepare::internal::prepared_def> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::prepare::internal::prepared_def> >*)
+   [3] putFollower3JoinTupleIfAbsent(Follower3JoinTupleMap*, int&, int&, Follower2Follower3VertexValueMap*, Follower3Follower4VertexValueMap*) [8] pqxx::string_traits<long>::from_string(char const*, long&) (strconv.cxx:421 @ 417c00) [1784] std::_Rb_tree<std::string, std::pair<std::string const, pqxx::notification_receiver*>, std::_Select1st<std::pair<std::string const, pqxx::notification_receiver*> >, std::less<std::string>, std::allocator<std::pair<std::string const, pqxx::notification_receiver*> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, pqxx::notification_receiver*> >*)
+   [7] putFollower5JoinTupleIfAbsent(Follower5JoinTupleMap*, int&, int&, Follower4Follower5VertexValueMap*, Follower5TweetVertexValueMap*) [9] pqxx::string_traits<long>::from_string(char const*, long&) (strconv.cxx:423 @ 417c67) [1779] std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, std::string> >*)
+   [4] follower1ProjectedTupleIterator(Follower1ProjectedTupleMap*) [1778] void std::vector<TweetJoinTupleEntry*, std::allocator<TweetJoinTupleEntry*> >::_M_emplace_back_aux<TweetJoinTupleEntry* const&>(TweetJoinTupleEntry* const&)
+ [1772] putFollower5TweetVertexValueIfAbsent(Follower5TweetVertexValueMap*, int&) [10] void std::vector<Follower1JoinTupleEntry*, std::allocator<Follower1JoinTupleEntry*> >::_M_emplace_back_aux<Follower1JoinTupleEntry* const&>(Follower1JoinTupleEntry* const&)

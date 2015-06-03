@@ -1,0 +1,23 @@
+#include "DataStructures.hpp"
+
+#ifndef DATASTRUCTURES_FUNCTIONS_HPP_
+#define DATASTRUCTURES_FUNCTIONS_HPP_
+
+Retweet1Retweet2VertexValueEntry* putRetweet1Retweet2VertexValueIfAbsent(Retweet1Retweet2VertexValueMap* retweet1Retweet2VertexValueMap, int& r1TweetIdR2RetweetTweetId);
+Retweet2FollowerVertexValueEntry* putRetweet2FollowerVertexValueIfAbsent(Retweet2FollowerVertexValueMap* retweet2FollowerVertexValueMap, int& r2UserIdFUserId);
+
+Retweet1JoinTupleEntry* putRetweet1JoinTupleIfAbsent(Retweet1JoinTupleMap* retweet1JoinTupleMap, int& r1TweetIdR2RetweetTweetId, Retweet1Retweet2VertexValueMap* retweet1Retweet2VertexValueMap );
+Retweet1ProjectedTupleEntry* putRetweet1ProjectedTuple(Retweet1ProjectedTupleMap* retweet1ProjectedTupleMap, int& r1TweetId );
+
+
+Retweet2JoinTupleEntry* putRetweet2JoinTupleIfAbsent(Retweet2JoinTupleMap* retweet2JoinTupleMap, int& r1TweetIdR2RetweetTweetId,int& r2UserIdFUserId, Retweet1Retweet2VertexValueMap* retweet1Retweet2VertexValueMap, Retweet2FollowerVertexValueMap* retweet2FollowerVertexValueMap );
+
+
+Retweet2ProjectedTupleEntry* putRetweet2ProjectedTuple(Retweet2ProjectedTupleMap* retweet2ProjectedTupleMap);
+
+FollowerJoinTupleEntry* putFollowerJoinTupleIfAbsent(FollowerJoinTupleMap* followerJoinTupleMap, int& r2UserIdFUserId, Retweet2FollowerVertexValueMap* retweet2FollowerVertexValueMap );
+FollowerProjectedTupleEntry* putFollowerProjectedTuple(FollowerProjectedTupleMap* followerProjectedTupleMap, int& followerId );
+
+
+
+#endif /* DATASTRUCTURES_FUNCTIONS_HPP_ */
