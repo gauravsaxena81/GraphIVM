@@ -1,0 +1,357 @@
+package org.ucsd.db.bsmagen1M.mixedworkload;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.ucsd.db.bsmagen.TestUtil;
+import org.ucsd.db.deltaivm.datamodel.Database;
+import org.ucsd.db.deltaivm.datamodel.DeltaIvmJoinGraph;
+import org.ucsd.db.deltaivm.datamodel.DeltaIvmRelationDefinition;
+import org.ucsd.db.deltaivm.datamodel.IndexedVertex;
+import org.ucsd.db.deltaivm.datamodel.RelationalTable;
+import org.ucsd.db.deltaivm.datamodel.ViewDefinition;
+import org.ucsd.db.deltaivm.delta.DeltaIvmManager;
+import org.ucsd.db.deltaivm.tableloader.DeltaIvmSqlTableLoader;
+import org.ucsd.db.fastview.index.IntArrayList;
+import org.ucsd.db.fastview.index.IntHashMap;
+import org.ucsd.db.view.ViewMaintainer;
+
+public class DeltaIvm1MQ3Aggregation {
+    private enum ALIAS{
+        ALIASUSERID, ALIASTWEETID;
+    }
+    private static Database database;
+    @BeforeClass
+    public static void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        database = new Database();
+
+        ViewDefinition viewDefinition = new ViewDefinition();
+        database.setViewDefinition(viewDefinition);
+        IntHashMap<String> projectedColumnOffsetMap = new IntHashMap<String>();
+        projectedColumnOffsetMap.put("users", 0);
+        projectedColumnOffsetMap.put("tweet", 0);
+        projectedColumnOffsetMap.put("retweet", 1);
+        viewDefinition.setProjectedColumnOffsetMap(projectedColumnOffsetMap);
+        
+        DeltaIvmJoinGraph graph = new DeltaIvmJoinGraph();
+        database.setJoinGraph(graph);
+        graph.add("ALIASUSERID", "users");
+        graph.add("ALIASUSERID", "tweet");
+        graph.add("ALIASTWEETID", "tweet");
+        graph.add("ALIASTWEETID", "retweet");
+        
+        initDriver();
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bsmagen1m", "gaurav", "gaurav");){
+            Statement stat = connection.createStatement();
+            
+            createUserTable(database, stat);
+            createTweetTable(database, stat);
+            createRetweetTable(database, stat);
+        }
+    }
+    private static void createRetweetTable(Database database, Statement stat) throws SQLException {
+        DeltaIvmRelationDefinition joinTupleDefinition = new DeltaIvmRelationDefinition();
+        joinTupleDefinition.setRelation("retweet");
+        List<IndexedVertex<? extends Enum<?>>> indexedVertices = new ArrayList<>();
+        joinTupleDefinition.setIndexedVertices(indexedVertices);
+        IndexedVertex<ALIAS> indexedVertex = new IndexedVertex<ALIAS>();
+        indexedVertices.add(indexedVertex);
+        indexedVertex.setAlias(ALIAS.ALIASTWEETID);
+        IntArrayList joinAttributeIndices = new IntArrayList();
+        joinAttributeIndices.add(0);
+        indexedVertex.setJoinAttributeIndices(joinAttributeIndices);
+        RelationalTable table = new DeltaIvmSqlTableLoader().loadTable(database
+            , stat.executeQuery("SELECT retweet_tweet_id, count(tweet_id) as r_tweet_id from retweet group by retweet_tweet_id;")
+            , joinTupleDefinition);
+        IntArrayList projectedAttributeIndices = new IntArrayList();
+        projectedAttributeIndices.add(1);
+        table.setProjectedAttributeIndices(projectedAttributeIndices);        
+    }
+    private static void createTweetTable(Database database, Statement stat) throws SQLException {
+        DeltaIvmRelationDefinition joinTupleDefinition = new DeltaIvmRelationDefinition();
+        joinTupleDefinition.setRelation("tweet");
+        List<IndexedVertex<? extends Enum<?>>> indexedVertices = new ArrayList<>();
+        joinTupleDefinition.setIndexedVertices(indexedVertices);
+        IndexedVertex<ALIAS> indexedVertex = new IndexedVertex<ALIAS>();
+        indexedVertices.add(indexedVertex);
+        indexedVertex.setAlias(ALIAS.ALIASTWEETID);
+        IntArrayList joinAttributeIndices = new IntArrayList();
+        joinAttributeIndices.add(1);
+        indexedVertex.setJoinAttributeIndices(joinAttributeIndices);
+        
+        indexedVertex = new IndexedVertex<ALIAS>();
+        indexedVertices.add(indexedVertex);
+        indexedVertex.setAlias(ALIAS.ALIASUSERID);
+        joinAttributeIndices = new IntArrayList();
+        joinAttributeIndices.add(0);
+        indexedVertex.setJoinAttributeIndices(joinAttributeIndices);
+        
+        RelationalTable table = new DeltaIvmSqlTableLoader().loadTable(database
+                , stat.executeQuery("SELECT user_id as t_user_id, tweet_id FROM tweet;")
+            , joinTupleDefinition);
+        IntArrayList projectedAttributeIndices = new IntArrayList();
+        table.setProjectedAttributeIndices(projectedAttributeIndices);        
+    }
+    private static void createUserTable(Database database, Statement stat) throws SQLException {
+        DeltaIvmRelationDefinition joinTupleDefinition = new DeltaIvmRelationDefinition();
+        joinTupleDefinition.setRelation("users");
+        List<IndexedVertex<? extends Enum<?>>> indexedVertices = new ArrayList<>();
+        joinTupleDefinition.setIndexedVertices(indexedVertices);
+        IndexedVertex<ALIAS> indexedVertex = new IndexedVertex<ALIAS>();
+        indexedVertices.add(indexedVertex);
+        indexedVertex.setAlias(ALIAS.ALIASUSERID);
+        IntArrayList joinAttributeIndices = new IntArrayList();
+        joinAttributeIndices.add(0);
+        indexedVertex.setJoinAttributeIndices(joinAttributeIndices);
+        RelationalTable table = new DeltaIvmSqlTableLoader().loadTable(database, stat.executeQuery("SELECT user_id as u_user_id from users")
+            , joinTupleDefinition);
+        IntArrayList projectedAttributeIndices = new IntArrayList();
+        projectedAttributeIndices.add(0);
+        table.setProjectedAttributeIndices(projectedAttributeIndices);        
+    }
+    private static void initDriver() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        Class.forName("org.postgresql.Driver").newInstance();
+    }
+    @Test
+    public void insertProjectedTuplesTest() throws ParseException, InstantiationException, IllegalAccessException
+        , ClassNotFoundException, SQLException {
+        DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+        ViewMaintainer viewMaintainer = new ViewMaintainer(new int[]{0});
+        int[] aggregatedAttributes = new int[]{0};
+        int MAX = 50000;
+        int x = 1000000000;
+        for(int j = 0; j < 10; j++) {
+            long tm = System.nanoTime();
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(2, x + i);
+                List<Object[]> t1 = deltaIvmManager.insertTuple(database, "retweet", tuple);
+                for(Object[] k : t1)
+                    viewMaintainer.applyTuple(k, aggregatedAttributes, 1);
+            }
+            long t = (System.nanoTime() - tm) / 1000000;
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(2, x + i);
+                deltaIvmManager.deleteTupleWithoutReturn(database, "retweet", tuple);
+            }
+            System.out.println(TestUtil.getTestName() + t + "/" + MAX);
+        }
+    }
+    @Test
+    public void deleteProjectedTuplesTest() throws ParseException, InstantiationException, IllegalAccessException
+        , ClassNotFoundException, SQLException {
+        DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+        ViewMaintainer viewMaintainer = new ViewMaintainer(new int[]{0});
+        int[] aggregatedAttributes = new int[]{0};
+        int MAX = 50000;
+        int x = 1000000000;
+        for(int j = 0; j < 10; j++) {
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(2, x + i);
+                List<Object[]> t1 = deltaIvmManager.insertTuple(database, "retweet", tuple);
+                for(Object[] k : t1)
+                    viewMaintainer.applyTuple(k, aggregatedAttributes, 1);
+            }
+            long tm = System.nanoTime();
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(2, x + i);
+                List<Object[]> t1 = deltaIvmManager.deleteTuple(database, "retweet", tuple);
+                for(Object[] k : t1)
+                    viewMaintainer.applyTuple(k, aggregatedAttributes, -1);
+            }
+            long t = (System.nanoTime() - tm) / 1000000;
+            System.out.println(TestUtil.getTestName() + t + "/" + MAX);
+        }
+    }
+    private Object[] createReTweet(int retweetTweetId, int tweetId) {
+        Object[] tuple = new Object[2];
+        tuple[0] = retweetTweetId;
+        tuple[1] = 1;
+        return tuple;
+    }
+    private Object[] createTweet(int user, int tweet) {
+        Object[] tuple = new Object[2];
+        tuple[0] = user;
+        tuple[1] = tweet;
+        return tuple;
+    }
+    @Test
+    public void insertJoinTuples1To1Test() throws ParseException, InstantiationException, IllegalAccessException
+        , ClassNotFoundException, SQLException {
+        DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+        int MAX = 50000;
+        int X = 1000000000;
+        for(int i = 0; i < MAX; i++) {
+            Object[] ins = createUser(X + i);
+            deltaIvmManager.insertTupleWithoutReturn(database, "users", ins);
+            ins = createTweet(X + i, X + i);
+            deltaIvmManager.insertTupleWithoutReturn(database, "tweet", ins);
+        }
+        ViewMaintainer viewMaintainer = new ViewMaintainer(new int[]{0});
+        int[] aggregatedAttributes = new int[]{0};
+        for(int k = 0; k < 10; k++) {
+            long tm = System.nanoTime();
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(X + i, X + i);
+                List<Object[]> t1 = deltaIvmManager.insertTuple(database, "retweet", tuple);
+                for(Object[] l : t1)
+                    viewMaintainer.applyTuple(l, aggregatedAttributes, 1);
+            }
+            System.out.println(TestUtil.getTestName() + (System.nanoTime() - tm) / 1000000 + "/" + MAX);
+            for(int i = 0; i < MAX; i++) {
+                Object[] ins = createReTweet(X + i, X + i);
+                deltaIvmManager.deleteTupleWithoutReturn(database, "retweet", ins);
+            }
+        }
+    }
+    @Test
+    public void deleteJoinTuples1To1Test() throws ParseException, InstantiationException, IllegalAccessException
+        , ClassNotFoundException, SQLException {
+        DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+        int MAX = 50000;
+        int X = 1000000000;
+        for(int i = 0; i < MAX; i++) {
+            Object[] ins = createUser(X + i);
+            deltaIvmManager.insertTupleWithoutReturn(database, "users", ins);
+            ins = createTweet(X + i, X + i);
+            deltaIvmManager.insertTupleWithoutReturn(database, "tweet", ins);
+        }
+        ViewMaintainer viewMaintainer = new ViewMaintainer(new int[]{0});
+        int[] aggregatedAttributes = new int[]{0};
+        for(int k = 0; k < 10; k++) {
+            for(int i = 0; i < MAX; i++) {
+                Object[] tuple = createReTweet(X + i, X + i);
+                deltaIvmManager.insertTupleWithoutReturn(database, "retweet", tuple);
+            }
+            long tm = System.nanoTime();
+            for(int i = 0; i < MAX; i++) {
+                Object[] ins = createReTweet(X + i, X + i);
+                List<Object[]> t1 = deltaIvmManager.deleteTuple(database, "retweet", ins);
+                for(Object[] l : t1)
+                    viewMaintainer.applyTuple(l, aggregatedAttributes, -1);
+            }
+            System.out.println(TestUtil.getTestName() + (System.nanoTime() - tm) / 1000000 + "/" + MAX);
+        }
+    }
+    @Test
+    public void insertMixedWorkLoadWithViewMaintenance() throws SQLException {
+        try(Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bsmagen1m", "gaurav", "gaurav")) {
+            int MAX = 50000;
+            PreparedStatement ps = connection.prepareStatement("select * from (select user_id, tweet_id, tweet_date"
+                + ", -1 as retweet_tweet_id from tweet T union select * from retweet order by 2 desc limit " + MAX + ") A order by 2 asc;");
+            DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+            ViewMaintainer viewMaintainer = new ViewMaintainer(new int[]{0});
+            int[] aggregatedAttributes = new int[]{0};
+            for(int i = 0; i < 10; i++) {
+                int t0 = 0, t1 = 0;
+                String s = null;
+                System.gc();
+                ResultSet rs = ps.executeQuery();
+                long tm = System.nanoTime();
+                while(rs.next()) {
+                    t0 = rs.getInt(1); 
+                    t1 = rs.getInt(2);
+                    s = rs.getString(3);
+                }
+                long d = (System.nanoTime() - tm)  / 1000000;
+                rs = ps.executeQuery();
+                tm = System.nanoTime();
+                while(rs.next()) {
+                    if(rs.getInt(4) == -1) {
+                        Object[] tuple = createTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.insertTuple(database, "tweet", tuple);
+                        for(Object[] tt : tuples)
+                            viewMaintainer.applyTuple(tt, aggregatedAttributes, 1);
+                    } else {
+                        Object[] tuple = createReTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.insertTuple(database, "retweet", tuple);
+                        for(Object[] tt : tuples)
+                            viewMaintainer.applyTuple(tt, aggregatedAttributes, 1);
+                        tuples = null;
+                    }
+                }
+                long t = (System.nanoTime() - tm - d)  / 1000000;
+                System.out.println(TestUtil.getTestName() + t + "/" + MAX);
+                rs = ps.executeQuery();
+                while(rs.next()) {
+                    if(rs.getInt(4) == -1) {
+                        Object[] tuple = createTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.deleteTuple(database, "tweet", tuple);
+                        for(Object[] tt : tuples)
+                            viewMaintainer.applyTuple(tt, aggregatedAttributes, 1);
+                    } else {
+                        Object[] tuple = createReTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.deleteTuple(database, "retweet", tuple);
+                        for(Object[] tt : tuples)
+                            viewMaintainer.applyTuple(tt, aggregatedAttributes, -1);
+                    }
+                }
+                System.out.println(t0 + "," + t1 + s);
+            }
+        }
+    }
+    @Test
+    public void insertMixedWorkLoadWithoutViewMaintenance() throws SQLException {
+        try(Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bsmagen1m", "gaurav", "gaurav")) {
+            int MAX = 50000;
+            PreparedStatement ps = connection.prepareStatement("select * from (select user_id, tweet_id, tweet_date"
+                + ", -1 as retweet_tweet_id from tweet T union select * from retweet order by 2 desc limit " + MAX + ") A order by 2 asc;");
+            DeltaIvmManager deltaIvmManager = new DeltaIvmManager();
+            for(int i = 0; i < 10; i++) {
+                int t0 = 0, t1 = 0;
+                String s = null;
+                System.gc();
+                ResultSet rs = ps.executeQuery();
+                long tm = System.nanoTime();
+                while(rs.next()) {
+                    t0 = rs.getInt(1); 
+                    t1 = rs.getInt(2);
+                    s = rs.getString(3);
+                }
+                long d = (System.nanoTime() - tm)  / 1000000;
+                rs = ps.executeQuery();
+                tm = System.nanoTime();
+                while(rs.next()) {
+                    if(rs.getInt(4) == -1) {
+                        Object[] tuple = createTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.insertTuple(database, "tweet", tuple);
+                        tuples = null;
+                    } else {
+                        Object[] tuple = createReTweet(rs.getInt(1), rs.getInt(2));
+                        List<Object[]> tuples = deltaIvmManager.insertTuple(database, "retweet", tuple);
+                        tuples = null;
+                    }
+                }
+                long t = (System.nanoTime() - tm - d)  / 1000000;
+                System.out.println(TestUtil.getTestName() + t + "/" + MAX);
+                rs = ps.executeQuery();
+                while(rs.next()) {
+                    if(rs.getInt(4) == -1) {
+                        Object[] tuple = createTweet(rs.getInt(1), rs.getInt(2));
+                        deltaIvmManager.deleteTupleWithoutReturn(database, "tweet", tuple);
+                    } else {
+                        Object[] tuple = createReTweet(rs.getInt(1), rs.getInt(2));
+                        deltaIvmManager.deleteTupleWithoutReturn(database, "retweet", tuple);
+                    }
+                }
+                System.out.println(t0 + "," + t1 + s);
+            }
+        }
+    }
+    private Object[] createUser(int user) {
+        Object[] tuple = new Object[1];
+        tuple[0] = user;
+        return tuple;
+    }
+    public static void destruct() {
+        database = null;        
+    }
+}

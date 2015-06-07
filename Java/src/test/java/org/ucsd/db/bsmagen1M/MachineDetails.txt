@@ -1,0 +1,4 @@
+IP:137.110.160.52
+port: 22
+user: ucsd
+pass: 2014ucsd_cse

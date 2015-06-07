@@ -1,0 +1,9 @@
+select count(*) from users; -- 1000
+select count(*) from follower;-- ~75
+select count(*) from tweet;-- ~45
+select count(*) from retweet;-- ~252
+
+select count(*) from follower A, tweet B where A.user_id = B.user_id; -- ~32973
+select count(*) from users A, tweet B, retweet C where A.user_id = B.user_id and B.tweet_id = C.retweet_tweet_id;--26
+SELECT COUNT(*) FROM tweet A, retweet B, retweet C, follower D WHERE A.tweet_id = B.retweet_tweet_id 
+    and B.tweet_id = C.retweet_tweet_id and C.user_id = D.user_id; -- ~12000
